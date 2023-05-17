@@ -1,0 +1,89 @@
+DROP TABLE IF EXISTS EXERCICIO;
+CREATE TABLE EXERCICIO (
+ID SERIAL PRIMARY KEY,
+FICHA_ID INTEGER NOT NULL,
+NOME_EXERCICIO VARCHAR(100) NOT NULL,
+DESCRICAO VARCHAR(100) NOT NULL,
+CONSTRAINT FK_FICHA_EXERCICIO FOREIGN KEY (FICHA_ID) REFERENCES FICHA(ID)
+);
+
+INSERT INTO "EXERCICIO" ("ID", "FICHA_ID", "NOME_EXERCICIO", "DESCRICAO") VALUES 
+(1, 1, 'flexao mao fechada', 'tipo aberta'),
+(2, 2, 'abdominal prancha', 'tipo TACF'),
+(3, 3, 'barra supinada', 'do tipo supinada'),
+(4, 4, 'Choque Eletrico', '30 min'),
+(5, 4, 'Alongamento do tornozelo com elastico', '3x10'),
+(6, 4, 'Piscina', '10 min'),
+(7, 5, 'Alongamento', '5 min'),
+(8, 5, 'Aquecimento Bobinho 10x1', '5 min'),
+(9, 5, 'Aquecimento Bobinho 10x2', '5 min'),
+(10, 5, 'Posicionamento Tatico 4-4-2', '20x posicionamento de ataque'),
+(11, 5, 'Posicionamento Tatico 4-4-2', '20x posicionamento de defesa'),
+(12, 5, 'Posicionamento Tatico 4-3-3', '10x posicionamento de ataque'),
+(13, 5, 'Posicionamento Tatico 4-3-3', '10x posicionamento de defesa'),
+(14, 5, 'Treino de penaltis', '10 min'),
+(15, 5, 'Banheira de gelo', '10 min'),
+(16, 6, 'Corrida leve', '30 min com 60%VM'),
+(17, 6, 'Sprint', '10x100m 90%VM'),
+(18, 6, 'Corrida recuperativa', '5 min trotando'),
+(19, 6, 'Corrida Moderada', '10x100m 75%VM'),
+(20, 6, 'Banheira de gelo', '10 min');
+
+DROP TABLE IF EXISTS FICHA;
+CREATE TABLE IF NOT EXISTS FICHA (
+    ID SERIAL PRIMARY KEY,
+    USERNAME_ID INTEGER NOT NULL,
+    PERSONAL_ID INTEGER NOT NULL,
+    TITULO VARCHAR(100) NOT NULL,
+    DESCRICAO VARCHAR(100) NOT NULL,
+    CONSTRAINT FOREIGN KEY (USERNAME_ID)
+        REFERENCES USERNAME (ID),
+    CONSTRAINT FOREIGN KEY (PERSONAL_ID)
+        REFERENCES PERSONAL (ID)
+);
+
+INSERT INTO "FICHA" ("ID", "USERNAME_ID", "PERSONAL_ID", "TITULO", "DESCRICAO")
+VALUES (1, 1, 1, 'flexao', 'tipo aberta'),
+       (2, 2, 2, 'abdominal', 'tipo TACF'),
+       (3, 3, 3, 'barra', 'do tipo supinada'),
+       (4, 4, 4, 'Fisioterapia', 'Recuperação do tornozelo'),
+       (5, 4, 5, 'Futebol 1', 'Treino Tatico'),
+       (6, 4, 5, 'Futebol 2', 'Treino Fisico');
+
+DROP TABLE IF EXISTS "TREINO";
+CREATE TABLE "TREINO" (
+"ID" SERIAL PRIMARY KEY,
+"USERNAME_ID" integer NOT NULL,
+"FICHA_ID" integer NOT NULL,
+"DATAHORA" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+CONSTRAINT "TREINO_fk_1" FOREIGN KEY ("FICHA_ID") REFERENCES "FICHA" ("ID"),
+CONSTRAINT "TREINO_fk_2" FOREIGN KEY ("USERNAME_ID") REFERENCES "USERNAME" ("ID")
+);
+
+INSERT INTO TREINO (ID, USERNAME_ID, FICHA_ID, DATAHORA) VALUES 
+  (1,1,1,'2022-11-20 09:30:00'),
+  (2,2,2,'2022-11-25 19:30:00'),
+  (3,3,3,'2022-11-27 21:30:00'),
+  (4,4,4,'2022-12-02 09:33:40'),
+  (5,4,4,'2022-12-02 09:40:30'),
+  (6,4,4,'2022-12-02 10:40:10'),
+  (7,4,6,'2022-12-02 10:40:43');
+
+DROP TABLE IF EXISTS "USERNAME";
+CREATE TABLE "USERNAME" (
+  "ID" serial NOT NULL,
+  "CPF" integer NOT NULL,
+  "NOME" varchar(100) NOT NULL,
+  "EMAIL" varchar(100) NOT NULL,
+  "SENHA" varchar(100) NOT NULL,
+  PRIMARY KEY ("ID")
+);
+
+INSERT INTO USERNAME (CPF, NOME, EMAIL, SENHA) 
+VALUES 
+(12345678, 'RYU', 'AAAA@A.com', '2013a0402'),
+(25423544, 'LUCA', 'BBBB@A.com', '2014B0402'),
+(33333312, 'BENICIO', 'CCCC@A.com', '2015C0402'),
+(10, 'NEYMAR', 'neymarjr@gmail.com', 'hexa'),
+(9999, 'Ronaldo', 'r9@gmail.com', 'penta'),
+(11, 'Romario', 'r11@gmail.com', 'tetra');
